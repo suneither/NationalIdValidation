@@ -228,7 +228,7 @@ public class LithuanianNationalIdValidatorTest {
 
         ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
 
-        assertTrue(ltuNatIdModel.isValid());
+        assertFalse(ltuNatIdModel.isValid());
     }
 
     @Test

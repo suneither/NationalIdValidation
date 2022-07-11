@@ -101,7 +101,7 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
 
         int lastIdDigit = 0;
         try {
-            lastIdDigit = Integer.parseInt(id.substring(10, 10));
+            lastIdDigit = Integer.parseInt(id.substring(10, 11));
         } catch (NumberFormatException ex) {
             String invalidPart = String.format("Last id digit is %d, it has to be number.", lastIdDigit);
             ltuNatIdModel.addInvalidPart(invalidPart);
