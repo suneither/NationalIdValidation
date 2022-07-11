@@ -1,22 +1,22 @@
 package org.example;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 public class LtuNatIdModel {
 
-    private long id;
+    private String id;
     private Gender gender;
-    private Date birthDate;
-    private boolean isValid = false;
-    private List<String> invalidParts = new ArrayList<>();
+    private LocalDate birthDate;
+    private boolean isValid = true;
+    private final List<String> invalidParts = new ArrayList<>();
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 
@@ -28,11 +28,11 @@ public class LtuNatIdModel {
         this.gender = gender;
     }
 
-    public Date getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
-    public void setBirthDate(Date birthDate) {
+    public void setBirthDate(LocalDate birthDate) {
         this.birthDate = birthDate;
     }
 
@@ -40,17 +40,15 @@ public class LtuNatIdModel {
         return isValid;
     }
 
-    public void setValid(boolean valid) {
-        isValid = valid;
-    }
-
     public List<String> getInvalidParts() {
         return invalidParts;
     }
 
-    public void setInvalidParts(List<String> invalidParts) {
-        this.invalidParts = invalidParts;
-    }
+    public void addInvalidPart(String invalidPart) {
+        invalidParts.add(invalidPart);
 
+        if (isValid)
+            isValid = false;
+    }
 
 }
