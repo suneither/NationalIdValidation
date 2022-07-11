@@ -9,7 +9,22 @@
     <option name="autoReloadType" value="SELECTIVE" />
   </component>
   <component name="ChangeListManager">
-    <list default="true" id="40f0c3e6-e2f3-40dc-8598-b0eea50454f7" name="Changes" comment="" />
+    <list default="true" id="40f0c3e6-e2f3-40dc-8598-b0eea50454f7" name="Changes" comment="gitignore added in correct directory">
+      <change afterPath="$PROJECT_DIR$/.idea/artifacts/NationalIdValidation_jar.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/.idea/dbnavigator.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/.gitignore" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/pom.xml" beforeDir="false" afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/LithuanianNationalIdValidator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/LithuanianNationalIdValidator.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/test/java/LithuanianNationalIdValidatorTest.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/test/java/LithuanianNationalIdValidatorTest.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/classes/org/example/LithuanianNationalIdValidator.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/classes/org/example/LithuanianNationalIdValidator.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-archiver/pom.properties" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-archiver/pom.properties" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" beforeDir="false" afterPath="$PROJECT_DIR$/target/maven-status/maven-compiler-plugin/compile/default-compile/createdFiles.lst" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/LithuanianNationalIdValidatorTest.txt" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/LithuanianNationalIdValidatorTest.txt" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/surefire-reports/TEST-LithuanianNationalIdValidatorTest.xml" beforeDir="false" afterPath="$PROJECT_DIR$/target/surefire-reports/TEST-LithuanianNationalIdValidatorTest.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/target/test-classes/LithuanianNationalIdValidatorTest.class" beforeDir="false" afterPath="$PROJECT_DIR$/target/test-classes/LithuanianNationalIdValidatorTest.class" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -46,6 +61,7 @@
   <component name="PropertiesComponent">
     <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
     <property name="RunOnceActivity.ShowReadmeOnStart" value="true" />
+    <property name="SHARE_PROJECT_CONFIGURATION_FILES" value="true" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$" />
     <property name="project.structure.last.edited" value="Artifacts" />
     <property name="project.structure.proportion" value="0.15" />
@@ -123,6 +139,49 @@
       <option name="presentableId" value="Default" />
       <updated>1654853379649</updated>
     </task>
+    <task id="LOCAL-00001" summary="Git Ignore">
+      <created>1655281157526</created>
+      <option name="number" value="00001" />
+      <option name="presentableId" value="LOCAL-00001" />
+      <option name="project" value="LOCAL" />
+      <updated>1655281157526</updated>
+    </task>
+    <task id="LOCAL-00002" summary="Everything">
+      <created>1655281332001</created>
+      <option name="number" value="00002" />
+      <option name="presentableId" value="LOCAL-00002" />
+      <option name="project" value="LOCAL" />
+      <updated>1655281332001</updated>
+    </task>
+    <task id="LOCAL-00003" summary="Changed abstract class to have only one method (validateId)&#10;Because other countries ids might not have Gender or Birthdate inside them.">
+      <created>1657522626641</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1657522626641</updated>
+    </task>
+    <task id="LOCAL-00004" summary="Modified LtuNatIdModel class.&#10;isValid variable now always true and is changed when new addInvalidPart method is called.&#10;addInvalidPart method adds invalid part to invalidParts list also changes isValid variable to false if it is not yet.&#10;Removed setValid setter&#10;Changed Date type to LocalDate because Date is deprecated">
+      <created>1657524668327</created>
+      <option name="number" value="00004" />
+      <option name="presentableId" value="LOCAL-00004" />
+      <option name="project" value="LOCAL" />
+      <updated>1657524668327</updated>
+    </task>
+    <task id="LOCAL-00005" summary=".gitignore added">
+      <created>1657525828054</created>
+      <option name="number" value="00005" />
+      <option name="presentableId" value="LOCAL-00005" />
+      <option name="project" value="LOCAL" />
+      <updated>1657525828054</updated>
+    </task>
+    <task id="LOCAL-00006" summary="gitignore added in correct directory">
+      <created>1657526169359</created>
+      <option name="number" value="00006" />
+      <option name="presentableId" value="LOCAL-00006" />
+      <option name="project" value="LOCAL" />
+      <updated>1657526169359</updated>
+    </task>
+    <option name="localTasksCounter" value="7" />
     <servers />
   </component>
   <component name="Vcs.Log.Tabs.Properties">
@@ -135,5 +194,15 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="Git Ignore" />
+    <MESSAGE value="Everything" />
+    <MESSAGE value="Changed abstract class to have only one method (validateId)&#10;Because other countries ids might not have Gender or Birthdate inside them." />
+    <MESSAGE value="Modified LtuNatIdModel class.&#10;isValid variable now always true and is changed when new addInvalidPart method is called.&#10;addInvalidPart method adds invalid part to invalidParts list also changes isValid variable to false if it is not yet.&#10;Removed setValid setter&#10;Changed Date type to LocalDate because Date is deprecated" />
+    <MESSAGE value=".gitignore added" />
+    <MESSAGE value="gitignore added in correct directory" />
+    <option name="LAST_COMMIT_MESSAGE" value="gitignore added in correct directory" />
   </component>
 </project>

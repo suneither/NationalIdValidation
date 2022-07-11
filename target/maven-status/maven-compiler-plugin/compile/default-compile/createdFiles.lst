@@ -1,2 +1,4 @@
+org\example\NationalIdValidator.class
 org\example\Gender.class
+org\example\LithuanianNationalIdValidator.class
 org\example\LtuNatIdModel.class

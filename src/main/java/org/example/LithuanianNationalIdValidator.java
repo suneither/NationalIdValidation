@@ -6,37 +6,30 @@ import java.util.Date;
 
 public class LithuanianNationalIdValidator extends NationalIdValidator {
 
-    private LtuNatIdModel ltuNatId = new LtuNatIdModel();
-
     @Override
-    public boolean validateID(long id) {
-        ltuNatId = new LtuNatIdModel();
-
-        if(validateLength(id))
-            if(validateGender(id))
-                if(validateBirthDate(id))
-                    if(validateControlDigit(id))
-                        ltuNatId.setValid(true);
-
+    public LtuNatIdModel validateID(String id) {
+        LtuNatIdModel ltuNatId = new LtuNatIdModel();
         ltuNatId.setId(id);
-        return ltuNatId.isValid();
+
+        validateLength(id, ltuNatId);
+        validateGender(id);
+        validateBirthDate(id);
+        validateControlDigit(id);
+
+        return ltuNatId;
     }
 
-    @Override
-    public boolean validateLength(long id){
+    private boolean validateLength(String id, LtuNatIdModel ltuNatIdModel){
 
-        int idLength = String.valueOf(id).length();
-
-        if(idLength == 11)
+        if(id.length() == 11)
             return true;
 
-        String s = String.format("Given id length is = %d, but must be 11", idLength);
-        ltuNatId.getInvalidParts().add(s);
+        String invalidPart = String.format("Given id length is = %d, but must be 11", id.length());
+        ltuNatIdModel.addInvalidPart(invalidPart);
         return false;
     }
 
-    @Override
-    public boolean validateGender(long id){
+    private boolean validateGender(String id){
 
         int firstDigit = Integer.parseInt(String.valueOf(String.valueOf(id).toCharArray()[0]));
 
@@ -54,8 +47,7 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
         return false;
     }
 
-    @Override
-    public boolean validateBirthDate(long id){
+    private boolean validateBirthDate(String id){
 
         String tempDate = String.valueOf(id).substring(1,7);
 
@@ -95,14 +87,14 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
     private String centuryFromIdFirstDigit(int firstDigit){
 
         if(firstDigit == 3 || firstDigit == 4)
-            return "20";
+            return "19";
         else if(firstDigit == 5 || firstDigit == 6)
-            return "21";
+            return "20";
 
         return "00";
     }
 
-    public boolean validateControlDigit(long id){
+    private boolean validateControlDigit(String id){
 
         int lastIdDigit = Integer.parseInt(String.valueOf(String.valueOf(id).toCharArray()[10]));
         int sum = calculateControlDigitSum(id, 1);
@@ -131,7 +123,4 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
         return sum;
     }
 
-    public LtuNatIdModel getLtuNatIdModel(){
-        return ltuNatId;
-    }
 }
