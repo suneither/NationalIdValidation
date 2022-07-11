@@ -108,7 +108,7 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
             return ltuNatIdModel;
         }
 
-        int sum = calculateControlDigitSum(lastIdDigit, 1);
+        int sum = calculateControlDigitSum(id, 1);
         int controlDigit = sum % 11;
         if (controlDigit < 10) {
             if (lastIdDigit != controlDigit) {
@@ -118,7 +118,7 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
             return ltuNatIdModel;
         }
 
-        sum = calculateControlDigitSum(lastIdDigit, 3);
+        sum = calculateControlDigitSum(id, 3);
         controlDigit = sum % 11;
         if (controlDigit == 10)
             controlDigit = 0;
@@ -131,12 +131,11 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
         return ltuNatIdModel;
     }
 
-    private int calculateControlDigitSum(long id, int startingMultiplier) {
+    private int calculateControlDigitSum(String id, int startingMultiplier) {
         int sum = 0;
         int multiplier = startingMultiplier;
-        char[] idDigits = String.valueOf(id).toCharArray();
-        for (int i = 0; i < idDigits.length - 1; i++) {
-            sum += Integer.parseInt(String.valueOf(idDigits[i])) * multiplier;
+        for (int i = 0; i < id.length() - 1; i++) {
+            sum += Integer.parseInt(id.substring(i, i + 1)) * multiplier;
             if (multiplier == 9) multiplier = 0;
             multiplier++;
         }

@@ -233,10 +233,10 @@ public class LithuanianNationalIdValidatorTest {
 
     @Test
     public void calculateControlDigitSum_GivenValidId_ShouldBeEqualsTo283() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        long id = 456_789_456_78L;
+        String id = "45678945678";
         int multiplier = 1;
 
-        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("calculateControlDigitSum", long.class, int.class);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("calculateControlDigitSum", String.class, int.class);
         method.setAccessible(true);
 
         validator = new LithuanianNationalIdValidator();
