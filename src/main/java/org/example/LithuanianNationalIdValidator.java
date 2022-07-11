@@ -1,123 +1,145 @@
 package org.example;
 
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
 
 public class LithuanianNationalIdValidator extends NationalIdValidator {
 
+    private static final String UNKNOWN_CENTURY = "00";
+
     @Override
     public LtuNatIdModel validateID(String id) {
+
+        if (id == null) return null;
+
         LtuNatIdModel ltuNatId = new LtuNatIdModel();
         ltuNatId.setId(id);
 
-        validateLength(id, ltuNatId);
-        validateGender(id);
-        validateBirthDate(id);
-        validateControlDigit(id);
+        ltuNatId = validateLength(id, ltuNatId);
+        if (ltuNatId.isValid()) {
+            ltuNatId = validateGender(id, ltuNatId);
+            ltuNatId = validateBirthDate(id, ltuNatId);
+            ltuNatId = validateControlDigit(id, ltuNatId);
+        }
 
         return ltuNatId;
     }
 
-    private boolean validateLength(String id, LtuNatIdModel ltuNatIdModel){
+    private LtuNatIdModel validateLength(String id, LtuNatIdModel ltuNatIdModel) {
 
-        if(id.length() == 11)
-            return true;
+        if (id.length() == 11)
+            return ltuNatIdModel;
 
-        String invalidPart = String.format("Given id length is = %d, but must be 11", id.length());
+        String invalidPart = String.format("Given id length is = %d, must be 11.", id.length());
         ltuNatIdModel.addInvalidPart(invalidPart);
-        return false;
+        return ltuNatIdModel;
     }
 
-    private boolean validateGender(String id){
+    private LtuNatIdModel validateGender(String id, LtuNatIdModel ltuNatIdModel) {
 
-        int firstDigit = Integer.parseInt(String.valueOf(String.valueOf(id).toCharArray()[0]));
+        String firstDigit = id.substring(0, 1);
 
-        if(firstDigit == 3 || firstDigit == 5){
-            ltuNatId.setGender(Gender.MALE);
-            return true;
+        if (firstDigit.equals("3") || firstDigit.equals("5")) {
+            ltuNatIdModel.setGender(Gender.MALE);
+            return ltuNatIdModel;
+        } else if (firstDigit.equals("4") || firstDigit.equals("6")) {
+            ltuNatIdModel.setGender(Gender.FEMALE);
+            return ltuNatIdModel;
         }
-        else if(firstDigit == 4 || firstDigit == 6){
-            ltuNatId.setGender(Gender.FEMALE);
-            return true;
-        }
 
-        String s = String.format("First digit is = %d, but can be one of these { 3,4,5,6 }", firstDigit);
-        ltuNatId.getInvalidParts().add(s);
-        return false;
+        String invalidPart = String.format("First digit is = %s, but can be one of these { 3,4,5,6 }.", firstDigit);
+        ltuNatIdModel.addInvalidPart(invalidPart);
+        return ltuNatIdModel;
     }
 
-    private boolean validateBirthDate(String id){
+    private LtuNatIdModel validateBirthDate(String id, LtuNatIdModel ltuNatIdModel) {
 
-        String tempDate = String.valueOf(id).substring(1,7);
+        String tempDate = id.substring(1, 7);
 
         // Very rare exception of Lithuanian national id
         // when 6 date numbers are set to 000000.
-        if(tempDate.equals("000000")){
-            return true;
+        if (tempDate.equals("000000")) {
+            LocalDate date = LocalDate.of(0000, 00, 00);
+            ltuNatIdModel.setBirthDate(date);
+            return ltuNatIdModel;
         }
 
-        String century = centuryFromIdFirstDigit(Integer.parseInt(String.valueOf(String.valueOf(id).toCharArray()[0])));
-        String year = century + tempDate.substring(0,2);
+        String century = centuryFromIdFirstDigit(id.substring(0, 1));
+        String year = century + tempDate.substring(0, 2);
 
-        String month = tempDate.substring(2,4);
+        String month = tempDate.substring(2, 4);
 
-        String day = tempDate.substring(4,6);
+        String day = tempDate.substring(4, 6);
 
         String dateAsString = year + "/" + month + "/" + day;
 
-        SimpleDateFormat sdf = new SimpleDateFormat("yyyy/MM/dd");
-        sdf.setLenient(false);
+        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy/MM/dd");
 
-        Date date;
-
-
+        LocalDate date;
         try {
-            date = sdf.parse(dateAsString);
-        } catch (ParseException ex) {
-            String s = String.format("Date extracted from id is %s, it does not exist.", dateAsString);
-            ltuNatId.getInvalidParts().add(s);
-            return false;
+            date = LocalDate.parse(dateAsString, dtf);
+        } catch (DateTimeParseException ex) {
+            String invalidPart = String.format("Date extracted from id is %s, it does not exist.", dateAsString);
+            ltuNatIdModel.addInvalidPart(invalidPart);
+            return ltuNatIdModel;
         }
 
-        ltuNatId.setBirthDate(date);
-        return true;
+        ltuNatIdModel.setBirthDate(date);
+        return ltuNatIdModel;
     }
 
-    private String centuryFromIdFirstDigit(int firstDigit){
+    private String centuryFromIdFirstDigit(String firstDigit) {
 
-        if(firstDigit == 3 || firstDigit == 4)
+        if (firstDigit.equals("3") || firstDigit.equals("4"))
             return "19";
-        else if(firstDigit == 5 || firstDigit == 6)
+        else if (firstDigit.equals("5") || firstDigit.equals("6"))
             return "20";
 
-        return "00";
+        return UNKNOWN_CENTURY;
     }
 
-    private boolean validateControlDigit(String id){
+    private LtuNatIdModel validateControlDigit(String id, LtuNatIdModel ltuNatIdModel) {
 
-        int lastIdDigit = Integer.parseInt(String.valueOf(String.valueOf(id).toCharArray()[10]));
-        int sum = calculateControlDigitSum(id, 1);
-        int controlDigit = sum % 11;
-        if(controlDigit < 10){
-            return lastIdDigit == controlDigit;
+        int lastIdDigit = 0;
+        try {
+            lastIdDigit = Integer.parseInt(id.substring(10, 10));
+        } catch (NumberFormatException ex) {
+            String invalidPart = String.format("Last id digit is %d, it has to be number.", lastIdDigit);
+            ltuNatIdModel.addInvalidPart(invalidPart);
+            return ltuNatIdModel;
         }
 
-        sum = calculateControlDigitSum(id, 3);
+        int sum = calculateControlDigitSum(lastIdDigit, 1);
+        int controlDigit = sum % 11;
+        if (controlDigit < 10) {
+            if (lastIdDigit != controlDigit) {
+                String invalidPart = String.format("Control digit is %d, it has to match last id digit %d", controlDigit, lastIdDigit);
+                ltuNatIdModel.addInvalidPart(invalidPart);
+            }
+            return ltuNatIdModel;
+        }
+
+        sum = calculateControlDigitSum(lastIdDigit, 3);
         controlDigit = sum % 11;
-        if(controlDigit == 10)
+        if (controlDigit == 10)
             controlDigit = 0;
 
-        return lastIdDigit == controlDigit;
+        if (lastIdDigit != controlDigit) {
+            String invalidPart = String.format("Control digit is %d, it has to match last id digit %d", controlDigit, lastIdDigit);
+            ltuNatIdModel.addInvalidPart(invalidPart);
+        }
+
+        return ltuNatIdModel;
     }
 
-    private int calculateControlDigitSum(long id, int startingMultiplier){
+    private int calculateControlDigitSum(long id, int startingMultiplier) {
         int sum = 0;
         int multiplier = startingMultiplier;
         char[] idDigits = String.valueOf(id).toCharArray();
         for (int i = 0; i < idDigits.length - 1; i++) {
             sum += Integer.parseInt(String.valueOf(idDigits[i])) * multiplier;
-            if(multiplier == 9) multiplier = 0;
+            if (multiplier == 9) multiplier = 0;
             multiplier++;
         }
         return sum;
