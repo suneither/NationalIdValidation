@@ -60,8 +60,6 @@ public class LithuanianNationalIdValidator extends NationalIdValidator {
         // Very rare exception of Lithuanian national id
         // when 6 date numbers are set to 000000.
         if (tempDate.equals("000000")) {
-            LocalDate date = LocalDate.of(0000, 00, 00);
-            ltuNatIdModel.setBirthDate(date);
             return ltuNatIdModel;
         }
 

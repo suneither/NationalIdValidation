@@ -1,166 +1,180 @@
 import org.example.LithuanianNationalIdValidator;
-import org.junit.Test;
+import org.example.LtuNatIdModel;
+import org.junit.jupiter.api.Test;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Random;
 
-import static org.junit.Assert.*;
+import static org.junit.jupiter.api.Assertions.*;
 
 public class LithuanianNationalIdValidatorTest {
 
     private LithuanianNationalIdValidator validator;
 
-    private static final long[] invalidIds = new long[] {
-            5_810204_251_5L, 5_560203_834_4L,
-            3_690120_915_5L, 3_910804_795_1L
+    LithuanianNationalIdValidatorTest() {
+        validator = new LithuanianNationalIdValidator();
+    }
 
+    private static final String[] invalidIds = new String[]{
+            "58102042515", "55602038344",
+            "36901209155", "39108047951"
     };
 
-    private static final long[] validIds = new long[] {
-            3_440915_785_0L, 3_880505_145_9L
+    private static final String[] validIds = new String[]{
+            "34409157850", "38805051459"
     };
 
-    private long getRandomValidId(){
+    private String getRandomValidId() {
         return validIds[new Random().nextInt(validIds.length)];
     }
 
-    private long getRandomInvalidId(){
+    private String getRandomInvalidId() {
         return invalidIds[new Random().nextInt(invalidIds.length)];
     }
 
     @Test
-    public void validateID_ValidID_True(){
-        long id = getRandomValidId();
-        
-        validator = new LithuanianNationalIdValidator();
+    public void validateID_ValidID_True() {
+        String id = getRandomValidId();
 
-        boolean out = validator.validateID(id);
-        assertTrue(out);
+        LtuNatIdModel ltuNatIdModel = validator.validateID(id);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateID_InvalidID_False(){
-        long id = getRandomInvalidId();
+    public void validateID_InvalidID_False() {
+        String id = getRandomInvalidId();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateID(id);
+        LtuNatIdModel ltuNatIdModel = validator.validateID(id);
 
-        assertFalse(out);
+        assertFalse(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateLength_ValidLength_True(){
-        long id = 5_158414_455_5L;
+    public void validateLength_ValidLength_True() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "51584144555";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateLength(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateLength", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertTrue(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateLength_LengthLessThan11_False(){
-        long id = 5_158414_45L;
+    public void validateLength_LengthLessThan11_False() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "515841445";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateLength(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateLength", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertFalse(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertFalse(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateLength_LengthMoreThan11_False(){
-        long id = 5_158414_456_355L;
+    public void validateLength_LengthMoreThan11_False() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "5158414456355";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateLength(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateLength", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertFalse(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertFalse(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateGender_MaleID_True(){
-        long id = 5_158414_456_3L;
+    public void validateGender_MaleID_True() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "51584144563";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateGender(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateGender", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertTrue(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateGender_FemaleID_True(){
-        long id = 4_158414_456_3L;
+    public void validateGender_FemaleID_True() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "41584144563";
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateGender(id);
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        assertTrue(out);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateGender", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
+
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateGender_WrongGenderNumber_False(){
-        long id = 1_158414_456_3L;
+    public void validateGender_WrongGenderNumber_False() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "11584144563";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateGender(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateGender", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertFalse(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertFalse(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateBirthDate_BirthDate000000_True(){
-        long id = 3_000000_321_5L;
+    public void validateBirthDate_BirthDate000000_True() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "30000003215";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateBirthDate(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateBirthDate", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertTrue(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateBirthDate_IDWithValidBirthDate_True(){
-        long id = 3_970506_321_5L;
+    public void validateBirthDate_IDWithValidBirthDate_True() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "39705063215";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateBirthDate(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateBirthDate", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertTrue(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateBirthDate_IDWithInvalidBirthDate_False(){
-        long id = 3_125051_321_5L;
+    public void validateBirthDate_IDWithInvalidBirthDate_False() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = "31250513215";
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateBirthDate(id);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateBirthDate", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
 
-        assertFalse(out);
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertFalse(ltuNatIdModel.isValid());
     }
 
     @Test
     public void centuryFromIdFirstDigit_FirstDigit5or6_21() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        int firstDigit = 6;
+        String firstDigit = "6";
 
-        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("centuryFromIdFirstDigit", int.class);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("centuryFromIdFirstDigit", String.class);
         method.setAccessible(true);
-
-        validator = new LithuanianNationalIdValidator();
-
-        String century = (String) method.invoke(validator, firstDigit);
-
-        assertEquals("21", century);
-    }
-
-    @Test
-    public void centuryFromIdFirstDigit_FirstDigit3or4_20() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        int firstDigit = 3;
-
-        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("centuryFromIdFirstDigit", int.class);
-        method.setAccessible(true);
-
-        validator = new LithuanianNationalIdValidator();
 
         String century = (String) method.invoke(validator, firstDigit);
 
@@ -168,13 +182,23 @@ public class LithuanianNationalIdValidatorTest {
     }
 
     @Test
-    public void centuryFromIdFirstDigit_FirstDigitWrong_00() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
-        int firstDigit = 1;
+    public void centuryFromIdFirstDigit_FirstDigit3or4_20() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String firstDigit = "3";
 
-        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("centuryFromIdFirstDigit", int.class);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("centuryFromIdFirstDigit", String.class);
         method.setAccessible(true);
 
-        validator = new LithuanianNationalIdValidator();
+        String century = (String) method.invoke(validator, firstDigit);
+
+        assertEquals("19", century);
+    }
+
+    @Test
+    public void centuryFromIdFirstDigit_FirstDigitWrong_00() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String firstDigit = "1";
+
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("centuryFromIdFirstDigit", String.class);
+        method.setAccessible(true);
 
         String century = (String) method.invoke(validator, firstDigit);
 
@@ -182,19 +206,29 @@ public class LithuanianNationalIdValidatorTest {
     }
 
     @Test
-    public void validateControlDigit_IDWithCorrectLastDigit_True(){
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateControlDigit(getRandomValidId());
+    public void validateControlDigit_IDWithCorrectLastDigit_True() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = getRandomValidId();
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        assertTrue(out);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateControlDigit", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
+
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
-    public void validateControlDigit_IDWithIncorrectLastDigit_False(){
-        validator = new LithuanianNationalIdValidator();
-        boolean out = validator.validateControlDigit(getRandomInvalidId());
+    public void validateControlDigit_IDWithIncorrectLastDigit_False() throws NoSuchMethodException, InvocationTargetException, IllegalAccessException {
+        String id = getRandomInvalidId();
+        LtuNatIdModel ltuNatIdModel = new LtuNatIdModel();
 
-        assertFalse(out);
+        Method method = LithuanianNationalIdValidator.class.getDeclaredMethod("validateControlDigit", String.class, LtuNatIdModel.class);
+        method.setAccessible(true);
+
+        ltuNatIdModel = (LtuNatIdModel) method.invoke(validator, id, ltuNatIdModel);
+
+        assertTrue(ltuNatIdModel.isValid());
     }
 
     @Test
@@ -206,8 +240,8 @@ public class LithuanianNationalIdValidatorTest {
         method.setAccessible(true);
 
         validator = new LithuanianNationalIdValidator();
-        int sum = (int)method.invoke(validator, id, multiplier);
+        int sum = (int) method.invoke(validator, id, multiplier);
 
-        assertEquals( 283, sum);
+        assertEquals(283, sum);
     }
 }
